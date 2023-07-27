@@ -38,13 +38,6 @@ endif
 # variables.  If these options are not defined, the makefile will
 # attempt to get the correct options from the `nf-config` command.
 
-# MPI_FLAGS
-# MPI_LIBS
-# If defined, use the MPI compile and link options defined in these
-# variables.  If these options are not defined, the makefile will
-# attempt to get the correct options from the `pkg-config` for mpich2
-# MPI library.
-
 # VERBOSE
 # If non-blank, add additional verbosity compiler options
 
@@ -96,11 +89,7 @@ else
 FPPFLAGS += $(NETCDF_FLAGS)
 endif
 # Fortran Compiler flags for the MPICH MPI library
-ifndef MPI_FLAGS
-FPPFLAGS += $(shell pkg-config --cflags-only-I mpich2-c)
-else
-FPPFLAGS += $(MPI_FLAGS)
-endif
+
 ifdef HDF_INCLUDE
 FPPFLAGS += $(HDF_INCLUDE)
 endif
@@ -126,12 +115,7 @@ CPPFLAGS += $(shell nc-config --cflags)
 else
 CPPFLAGS += $(NETCDF_FLAGS)
 endif
-# C Compiler flags for the MPICH MPI library
-ifndef MPI_FLAGS
-CPPFLAGS += $(shell pkg-config --cflags-only-I mpich2-c)
-else
-CPPFLAGS += $(MPI_FLAGS)
-endif
+
 
 # Base set of C compiler flags
 CFLAGS := -sox -traceback
@@ -170,12 +154,8 @@ LIBS += $(shell nc-config --libs)
 else
 LIBS += $(NETCDF_LIBS)
 endif
-# MPICH MPI library flags
-ifndef MPI_LIBS
-LIBS += $(shell pkg-config --libs mpich2-f90)
-else
-LIBS += $(MPI_LIBS)
-endif
+
+
 # HDF library flags
 ifndef HDF_LIBS
 LIBS += -lhdf5 -lhdf5_fortran -lhdf5_hl -lhdf5_hl_fortran
