@@ -27,41 +27,9 @@ Stage: build
 # apt install -y intel-basekit intel-hpckit
 ##
  FC=ifort 
- CC=icc
+ CC=icx
 
- build=/opt
- IO_LIBS=${build}/io_libs
-## Build zlib and szip and curl
- cd $build 
- zlib="zlib-1.2.11" 
- rm -rf zlib* 
- wget http://www.zlib.net/zlib-1.2.11.tar.gz 
- tar xzf zlib-1.2.11.tar.gz 
- cd $zlib 
- ./configure --prefix=${IO_LIBS} 
- make 
- make -j 20 install
-# CC "icc -fPIC"
- cd $build 
- szip="szip-2.1.1" 
- rm -rf szip* 
- wget https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz 
- tar xzf szip-2.1.1.tar.gz 
- cd $szip 
- ./configure FC=ifort CC=icc --prefix=${IO_LIBS} CPPDEFS="-fPIC" 
- make 
- make -j 20 install
- cd $build 
- curl="curl-7.74.0" 
- rm -rf curl* 
- wget https://curl.haxx.se/download/${curl}.tar.gz 
- tar xzf ${curl}.tar.gz 
- cd $curl 
- ./configure FC=ifort CC=icc --prefix=${IO_LIBS} 
- make 
- make -j 20 install
 
- LD_LIBRARY_PATH=${IO_LIBS}/lib:${LD_LIBRARY_PATH}:/opt/io_libs/lib
 #*********************
 ## Install hdf5 with fortran
 #*********************
