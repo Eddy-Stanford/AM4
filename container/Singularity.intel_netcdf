@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: intel/oneapi-hpckit:2021.2-devel-ubuntu18.04 
+From: intel/oneapi-hpckit
 Stage: build
 
 %post
