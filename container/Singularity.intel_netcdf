@@ -10,6 +10,7 @@ Stage: build
   apt-get -yqq install make
   apt-get -yqq install wget
   apt-get -yqq install m4
+  apt-get -yqq install zlib1g-dev
   apt-get -yqq install autoconf
   apt-get -yqq install automake
   apt-get -yqq install libtool
