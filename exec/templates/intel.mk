@@ -5,10 +5,10 @@
 
 ############
 # Command Macros
-FC = mpiifort
-CC = mpiicc
-CXX = mpiicc
-LD = mpiifort
+FC = mpiifx
+CC = mpiicx
+CXX = mpiicx
+LD = mpiifx
 #######################
 # Build target macros
 #
@@ -77,10 +77,12 @@ ifneq ($(need),$(ok))
 $(error Need at least make version $(need).  Load module gmake/3.81)
 endif
 
-MAKEFLAGS += --jobs=$(shell grep '^processor' /proc/cpuinfo | wc -l)
+# MAKEFLAGS += --jobs=$(shell grep '^processor' /proc/cpuinfo | wc -l)
 
 # Macro for Fortran preprocessor
 FPPFLAGS = -fpp -Wp,-w $(INCLUDES)
+# Base set of Fortran compiler flags
+FFLAGS := -fno-alias -stack-temps -safe-cray-ptr -ftz -assume byterecl -i4 -r8 -nowarn -g -fp-model precise -traceback
 # Fortran Compiler flags for the NetCDF library
 ifndef NETCDF_FLAGS
 FPPFLAGS += $(shell nf-config --fflags) 
@@ -93,8 +95,7 @@ endif
 ifdef HDF_INCLUDE
 FPPFLAGS += $(HDF_INCLUDE)
 endif
-# Base set of Fortran compiler flags
-FFLAGS := -fno-alias -stack-temps -safe-cray-ptr -ftz -assume byterecl -i4 -r8 -nowarn -g -sox -traceback
+
 
 # Flags based on perforance target (production (OPT), reproduction (REPRO), or debug (DEBUG)
 FFLAGS_PROD = -fp-model source -O3
