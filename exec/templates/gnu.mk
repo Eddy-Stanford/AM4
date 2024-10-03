@@ -96,11 +96,11 @@ else
 FPPFLAGS += $(NETCDF_FLAGS)
 endif
 # Fortran Compiler flags for the MPICH MPI library
-ifndef MPI_FLAGS
-FPPFLAGS += $(shell pkg-config --cflags-only-I mpich2-c)
-else
-FPPFLAGS += $(MPI_FLAGS)
-endif
+# ifndef MPI_FLAGS
+# FPPFLAGS += $(shell pkg-config --cflags-only-I mpich2-c)
+# else
+# FPPFLAGS += $(MPI_FLAGS)
+# endif
 ifdef HDF_INCLUDE
 FPPFLAGS += $(HDF_INCLUDE)
 endif
@@ -128,11 +128,11 @@ else
 CPPFLAGS += $(NETCDF_FLAGS)
 endif
 # C Compiler flags for the MPICH MPI library
-ifndef MPI_FLAGS
-CPPFLAGS += $(shell pkg-config --cflags-only-I mpich2-c)
-else
-CPPFLAGS += $(MPI_FLAGS)
-endif
+# ifndef MPI_FLAGS
+# CPPFLAGS += $(shell pkg-config --cflags-only-I mpich2-c)
+# else
+# CPPFLAGS += $(MPI_FLAGS)
+# endif
 
 # Base set of C compiler flags
 CFLAGS := 
@@ -171,11 +171,11 @@ else
 LIBS += $(NETCDF_LIBS)
 endif
 # MPICH MPI library flags
-ifndef MPI_LIBS
-LIBS += $(shell pkg-config --libs mpich2-f90)
-else
-LIBS += $(MPI_LIBS)
-endif
+# ifndef MPI_LIBS
+# LIBS += $(shell pkg-config --libs mpich2-f90)
+# else
+# LIBS += $(MPI_LIBS)
+# endif
 # HDF library flags
 ifndef HDF_LIBS
 LIBS += -lhdf5 -lhdf5_fortran -lhdf5_hl -lhdf5_hl_fortran
@@ -183,11 +183,11 @@ else
 LIBS += $(HDF_LIBS)
 endif
 # MKL library flags
-ifndef MKL_LIBS
-#LIBS += -lmkl_blas95_lp64 -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_sequential
-else
-LIBS += $(MKL_LIBS)
-endif
+# ifndef MKL_LIBS
+# #LIBS += -lmkl_blas95_lp64 -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_sequential
+# else
+# LIBS += $(MKL_LIBS)
+# endif
 
 # Get compile flags based on target macros.
 ifeq ($(BLD_TYPE),REPRO)
