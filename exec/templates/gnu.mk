@@ -182,12 +182,12 @@ LIBS += -lhdf5 -lhdf5_fortran -lhdf5_hl -lhdf5_hl_fortran
 else
 LIBS += $(HDF_LIBS)
 endif
-# MKL library flags
-# ifndef MKL_LIBS
-# #LIBS += -lmkl_blas95_lp64 -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_sequential
-# else
-# LIBS += $(MKL_LIBS)
-# endif
+# MKL/BLAS library flags
+ifndef MKL_LIBS
+LIBS += -lopenblas 
+else
+LIBS += $(MKL_LIBS)
+endif
 
 # Get compile flags based on target macros.
 ifeq ($(BLD_TYPE),REPRO)
