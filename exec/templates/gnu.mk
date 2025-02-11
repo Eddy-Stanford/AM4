@@ -72,7 +72,7 @@ endif
 # The Intel Instruction Set Archetecture (ISA) compile options to use.
 # If blank, than use the default ISA settings for the host.
 ifndef ISA
-ISA = -msse2
+ISA = -march=native
 endif
 
 # COVERAGE
@@ -95,19 +95,11 @@ FPPFLAGS += $(shell nf-config --fflags)
 else
 FPPFLAGS += $(NETCDF_FLAGS)
 endif
-# Fortran Compiler flags for the MPICH MPI library
-ifndef MPI_FLAGS
-FPPFLAGS += $(shell pkg-config --cflags-only-I mpich2-c)
-else
-FPPFLAGS += $(MPI_FLAGS)
-endif
-ifdef HDF_INCLUDE
-FPPFLAGS += $(HDF_INCLUDE)
-endif
+FPPFLAGS += $(shell pkg-config hdf5 --cflags)
 
 # Base set of Fortran compiler flags
 FFLAGS := -fcray-pointer -fdefault-real-8 -fdefault-double-8 -Waliasing -ffree-line-length-none -fno-range-check -fallow-invalid-boz -fallow-argument-mismatch
-
+FFLAGS += $(shell nf-config --fflags)
 # Flags based on perforance target (production (OPT), reproduction (REPRO), or debug (DEBUG)
 FFLAGS_OPT = -O2 -fno-expensive-optimizations
 FFLAGS_REPRO =
@@ -128,12 +120,7 @@ else
 CPPFLAGS += $(NETCDF_FLAGS)
 endif
 # C Compiler flags for the MPICH MPI library
-ifndef MPI_FLAGS
-CPPFLAGS += $(shell pkg-config --cflags-only-I mpich2-c)
-else
-CPPFLAGS += $(MPI_FLAGS)
-endif
-
+CPPFLAGS += $(shell pkg-config hdf5 --cflags)
 # Base set of C compiler flags
 CFLAGS := 
 
@@ -165,30 +152,9 @@ LDFLAGS_COVERAGE :=
 # Start with a blank LIBS
 LIBS =
 # NetCDF library flags
-ifndef NETCDF_LIBS
 LIBS += $(shell nf-config --flibs) $(shell nc-config --libs)
-else
-LIBS += $(NETCDF_LIBS)
-endif
-# MPICH MPI library flags
-ifndef MPI_LIBS
-LIBS += $(shell pkg-config --libs mpich2-f90)
-else
-LIBS += $(MPI_LIBS)
-endif
-# HDF library flags
-ifndef HDF_LIBS
-LIBS += -lhdf5 -lhdf5_fortran -lhdf5_hl -lhdf5_hl_fortran
-else
-LIBS += $(HDF_LIBS)
-endif
-# MKL library flags
-ifndef MKL_LIBS
-#LIBS += -lmkl_blas95_lp64 -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_sequential
-else
-LIBS += $(MKL_LIBS)
-endif
-
+LIBS += $(shell pkg-config hdf5 --libs) $(shell pkg-config hdf5_fortran --libs) $(shell pkg-config hdf5_hl --libs) $(shell pkg-config hdf5_hl_fortran --libs)
+LIBS += $(shell pkg-config openblas --libs)
 # Get compile flags based on target macros.
 ifeq ($(BLD_TYPE),REPRO)
 CFLAGS += $(CFLAGS_REPRO)
@@ -203,7 +169,7 @@ else
 CFLAGS += $(CFLAGS_PROD)
 FFLAGS += $(FFLAGS_PROD)
 endif
-
+COBALT=$(FFLAGS)
 ifdef OPENMP
 CFLAGS += $(CFLAGS_OPENMP)
 FFLAGS += $(FFLAGS_OPENMP)
