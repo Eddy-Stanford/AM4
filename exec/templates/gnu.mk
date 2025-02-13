@@ -154,7 +154,7 @@ LIBS =
 # NetCDF library flags
 LIBS += $(shell nf-config --flibs) $(shell nc-config --libs)
 LIBS += $(shell pkg-config hdf5 --libs) $(shell pkg-config hdf5_fortran --libs) $(shell pkg-config hdf5_hl --libs) $(shell pkg-config hdf5_hl_fortran --libs)
-
+LIBS += $(shell pkg-config openblas --libs)
 ifeq ($(BLD_TYPE),REPRO)
 CFLAGS += $(CFLAGS_REPRO)
 FFLAGS += $(FFLAGS_REPRO)
